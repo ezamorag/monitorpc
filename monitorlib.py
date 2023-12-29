@@ -6,7 +6,7 @@ import numpy as np
 
 # Future work: 
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
-#   Include PC sound and webcam
+#   Include PC sound, microphone, webcam
 #   Make the same for smartphones
 
 class Monitorpc:
