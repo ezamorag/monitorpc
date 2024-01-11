@@ -4,6 +4,8 @@ import pyautogui
 import cv2
 import numpy as np
 from pathlib import Path
+import os
+import re
 
 # Future work: 
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
@@ -16,7 +18,11 @@ from pathlib import Path
 #       1) en iamgenes con sicronia es infeiciente en memoria 29gb en 1hora, 
 #       2) en video 1.9gb en 1hora, pero pierdo sincronia, a menos que estampe el tiempo en el frame 
 
+#filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".jpg" Hace muy lenta los FPS para el screensaving
+
 class Monitorpc:
+
+
     def __init__(self, Tf):
         self.Tf = Tf  # Total duration in seconds
         self.fps = 30 # frames per second for screenshots
@@ -25,9 +31,11 @@ class Monitorpc:
         self.mouse_scrolls = []
         self.keys_pressed = []
         self.screenshots = [] 
+        self.base_folder = 'data/'
+        self.sample_folder = self.create_incremented_folder(self.base_folder) + '/'     
         
     # Monitoring
-    def start(self):
+    def start_wvideo(self):
         height, width, layers = self.capture_screen().shape
         video = cv2.VideoWriter('screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
         print("Monitoring is working ...")
@@ -43,21 +51,21 @@ class Monitorpc:
         print("Monitoring was ended ...")
 
     # Monitoring
-    def start2(self):
-        folder = 'screenshoots/'
-        Path(folder).mkdir(exist_ok=True)
+    def start(self):
         print("Monitoring is working ...")
         self.start_time = time.time()
         with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
             keyboard.Listener(on_press=self.on_press) as listener_keyboard:
-            k, t = 0, 0
+            t, k = 0, 0
             while t < self.Tf:
                 t = time.time() - self.start_time
-                screenshot = pyautogui.screenshot(folder + 'screen_{:08}_{}.jpg'.format(k, t))
-                time.sleep(1.0/self.fps)
+                screenshot = pyautogui.screenshot(self.sample_folder + '{:010}_{}.jpg'.format(k,t))
                 k += 1
+                time.sleep(1.0/self.fps)
+
         self.savevents()
         print("Monitoring was ended ...")
+
             
     # Stores mouse events
     def on_move(self, x, y):
@@ -85,9 +93,23 @@ class Monitorpc:
                 for item in items:
                     file.write(",".join(str(i) for i in item)+"\n")
                     
-        writevents("mouse_clicks.txt", self.mouse_clicks)
-        writevents("mouse_moves.txt", self.mouse_moves)
-        writevents("mouse_scrolls.txt", self.mouse_scrolls)
-        writevents("keys_pressed.txt", self.keys_pressed)
+        writevents(self.sample_folder + "mouse_clicks.txt", self.mouse_clicks)
+        writevents(self.sample_folder + "mouse_moves.txt", self.mouse_moves)
+        writevents(self.sample_folder + "mouse_scrolls.txt", self.mouse_scrolls)
+        writevents(self.sample_folder + "keys_pressed.txt", self.keys_pressed)
         
-    
+    def create_incremented_folder(self, path):
+        if not os.path.exists(path):
+            os.makedirs(path)
+        # Find the highest number
+        dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+        highest_num = 0
+        for dir_name in dirs:
+            match = re.match(r"sample(\d+)", dir_name)
+            if match:
+                highest_num = max(highest_num, int(match.group(1)))
+        # Create new folder
+        new_folder_name = f"sample{highest_num + 1}"
+        new_folder_path = os.path.join(path, new_folder_name)
+        os.makedirs(new_folder_path)
+        return new_folder_path

@@ -1,7 +1,3 @@
 
 __pycache__/monitorlib.cpython-310.pyc
-keys_pressed.txt
-mouse_clicks.txt
-mouse_moves.txt
-mouse_scrolls.txt
-screencast.mp4
+data/
