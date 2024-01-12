@@ -22,8 +22,7 @@ import keyboard as kb
 #filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".jpg" Hace muy lenta los FPS para el screensaving
 
 class Monitorpc:
-    def __init__(self, Tf):
-        self.Tf = Tf  # Total duration in seconds
+    def __init__(self):
         self.fps = 30 # frames per second for screenshots
         self.mouse_moves = []
         self.mouse_clicks = [] 
@@ -38,10 +37,11 @@ class Monitorpc:
         height, width, layers = self.capture_screen().shape
         video = cv2.VideoWriter(self.sample_folder + 'screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
         print("Monitoring is working ...")
+        self.running = True
         self.start_time = time.time()
         with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
             keyboard.Listener(on_press=self.on_press) as listener_keyboard:
-            while time.time() - self.start_time < self.Tf:
+            while self.running:
                 video.write(self.capture_screen())
                 time.sleep(1.0/self.fps)
         cv2.destroyAllWindows()
