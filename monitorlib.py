@@ -6,6 +6,7 @@ import numpy as np
 from pathlib import Path
 import os
 import re
+import keyboard as kb
 
 # Future work: 
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
@@ -21,8 +22,6 @@ import re
 #filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".jpg" Hace muy lenta los FPS para el screensaving
 
 class Monitorpc:
-
-
     def __init__(self, Tf):
         self.Tf = Tf  # Total duration in seconds
         self.fps = 30 # frames per second for screenshots
@@ -37,7 +36,7 @@ class Monitorpc:
     # Monitoring
     def start_wvideo(self):
         height, width, layers = self.capture_screen().shape
-        video = cv2.VideoWriter('screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
+        video = cv2.VideoWriter(self.sample_folder + 'screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
         print("Monitoring is working ...")
         self.start_time = time.time()
         with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
@@ -52,6 +51,9 @@ class Monitorpc:
 
     # Monitoring
     def start(self):
+        print("Waiting for activation with ESC key ...")
+        kb.wait('esc')
+
         print("Monitoring is working ...")
         self.start_time = time.time()
         with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
