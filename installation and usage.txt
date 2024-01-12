@@ -1,9 +1,0 @@
-conda create --name automat python==3.10
-conda activate automat
-pip install pyautogui pynput jupyterlab opencv-python keyboard
-
-### Usage
-conda activate automat
-which python
-sudo /home/ezamorag/miniconda3/envs/automat/bin/python monitor.py
-sudo chown -R ezamorag:ezamorag data/
