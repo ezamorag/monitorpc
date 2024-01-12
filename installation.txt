@@ -1,3 +1,0 @@
-conda create --name automat python==3.10
-conda activate automat
-pip install pyautogui pynput jupyterlab opencv-python keyboard
