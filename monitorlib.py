@@ -9,9 +9,11 @@ import re
 import keyboard as kb
 
 # Future work: 
+#   Make easy installation for windows users and avoid adsminitrator permissions. 
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
 #   Include PC sound, microphone, webcam
 #   Make the same for smartphones
+
 
 # Problema de nivel 1. Elegir solo los datos necesarios con que entrenar un modelo que resuelta la tarea Z. En lugar de colectarlos todos. 
 #  1) Solo grabar screenshot T tiempos antes y despues de que ocurra un evento en el mause y el teclado
