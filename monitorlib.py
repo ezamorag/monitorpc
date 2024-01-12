@@ -33,7 +33,7 @@ class Monitorpc:
         self.base_folder = 'data/'
         self.sample_folder = self.create_incremented_folder(self.base_folder) + '/'     
         
-    # Monitoring
+    # Monitoring (No used)
     def start_wvideo(self):
         height, width, layers = self.capture_screen().shape
         video = cv2.VideoWriter(self.sample_folder + 'screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
@@ -55,11 +55,12 @@ class Monitorpc:
         kb.wait('esc')
 
         print("Monitoring is working ...")
+        self.running = True
         self.start_time = time.time()
         with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
             keyboard.Listener(on_press=self.on_press) as listener_keyboard:
             t, k = 0, 0
-            while t < self.Tf:
+            while self.running:
                 t = time.time() - self.start_time
                 screenshot = pyautogui.screenshot(self.sample_folder + '{:010}_{}.jpg'.format(k,t))
                 k += 1
@@ -81,6 +82,8 @@ class Monitorpc:
     # Stores keyboard events 
     def on_press(self, key):
         self.keys_pressed.append((time.time() - self.start_time, key))
+        if key == keyboard.Key.esc: 
+            self.running = False
             
     # Stores screenshots  
     def capture_screen(self):
