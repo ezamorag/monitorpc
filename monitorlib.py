@@ -9,6 +9,7 @@ import re
 import keyboard as kb
 
 # Future work: 
+#   Grabar solo cuando hay eventos como la camara Imou
 #   Make easy installation for windows users and avoid adsminitrator permissions. 
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
 #   Include PC sound, microphone, webcam
@@ -40,7 +41,7 @@ class Monitorpc:
         video = cv2.VideoWriter(self.sample_folder + 'screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
         print("Monitoring is working ...")
         self.running = True
-        self.start_time = time.time()
+        self.start_time = time.perf_counter()
         with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
             keyboard.Listener(on_press=self.on_press) as listener_keyboard:
             while self.running:
@@ -58,12 +59,12 @@ class Monitorpc:
 
         print("Monitoring is working ...")
         self.running = True
-        self.start_time = time.time()
+        self.start_time = time.perf_counter()
         with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
             keyboard.Listener(on_press=self.on_press) as listener_keyboard:
             t, k = 0, 0
             while self.running:
-                t = time.time() - self.start_time
+                t = time.perf_counter() - self.start_time
                 screenshot = pyautogui.screenshot(self.sample_folder + '{:010}_{}.jpg'.format(k,t))
                 k += 1
                 time.sleep(1.0/self.fps)
@@ -74,16 +75,16 @@ class Monitorpc:
             
     # Stores mouse events
     def on_move(self, x, y):
-        self.mouse_moves.append((time.time() - self.start_time, x, y)) 
+        self.mouse_moves.append((time.perf_counter() - self.start_time, x, y)) 
     def on_click(self, x, y, button, pressed):
         if pressed:
-            self.mouse_clicks.append((time.time() - self.start_time, x, y, button))
+            self.mouse_clicks.append((time.perf_counter() - self.start_time, x, y, button))
     def on_scroll(self, x, y, dx, dy):
-        self.mouse_scrolls.append((time.time() - self.start_time, x, y, dx, dy))
+        self.mouse_scrolls.append((time.perf_counter() - self.start_time, x, y, dx, dy))
     
     # Stores keyboard events 
     def on_press(self, key):
-        self.keys_pressed.append((time.time() - self.start_time, key))
+        self.keys_pressed.append((time.perf_counter() - self.start_time, key.strip("'")))
         if key == keyboard.Key.esc: 
             self.running = False
             
