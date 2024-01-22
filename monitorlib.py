@@ -9,6 +9,7 @@ import re
 import keyboard as kb
 
 # Future work: 
+#   Grabar cuando se clicks se sostienen y los botones. 
 #   Grabar solo cuando hay eventos como la camara Imou
 #   Make easy installation for windows users and avoid adsminitrator permissions. 
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
