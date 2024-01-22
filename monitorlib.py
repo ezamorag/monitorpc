@@ -84,7 +84,7 @@ class Monitorpc:
     
     # Stores keyboard events 
     def on_press(self, key):
-        self.keys_pressed.append((time.perf_counter() - self.start_time, key.strip("'")))
+        self.keys_pressed.append((time.perf_counter() - self.start_time, str(key).strip("'")))
         if key == keyboard.Key.esc: 
             self.running = False
             
