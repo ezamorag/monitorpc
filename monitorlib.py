@@ -15,6 +15,7 @@ import keyboard as kb
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
 #   Include PC sound, microphone, webcam
 #   Make the same for smartphones
+# Resolver el problma de memoria de la base de datos 
 
 
 # Problema de nivel 1. Elegir solo los datos necesarios con que entrenar un modelo que resuelta la tarea Z. En lugar de colectarlos todos. 
