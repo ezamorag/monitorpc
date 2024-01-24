@@ -9,7 +9,7 @@ import re
 import keyboard as kb
 
 # Future work: 
-#   Grabar cuando se clicks se sostienen y los botones. 
+#   Grabar cuando se clicks se sostienen y los botones, double lcicks tmbien. 
 #   Grabar solo cuando hay eventos como la camara Imou
 #   Make easy installation for windows users and avoid adsminitrator permissions. 
 #   Include hotkeys  https://pynput.readthedocs.io/en/latest/keyboard.html
@@ -123,3 +123,32 @@ class Monitorpc:
         new_folder_path = os.path.join(path, new_folder_name)
         os.makedirs(new_folder_path)
         return new_folder_path
+
+
+### To load PC data 
+
+import pandas as pd 
+from glob import glob
+import os
+
+def gscreenschots_df(samplefolder):
+    img_paths = glob(samplefolder + '/*.jpg')
+    img_paths.sort()
+    img_df = pd.DataFrame(img_paths, columns=['img_path'])
+    ftimestamp = lambda img_path: float(os.path.basename(img_path).replace('.jpg','').split("_")[-1])
+    img_df["timestamp"] = img_df["img_path"].map(ftimestamp)
+    return img_df.iloc[:,[1,0]]
+
+def load_pcdata(data_dir): 
+    data = {}
+    samplefolders = glob(data_dir + '/*')
+    samplefolders.sort()
+    for samplefolder in samplefolders:
+        sample = {}
+        sample['moves'] = pd.read_csv(samplefolder + '/mouse_moves.txt', names=['timestamp', 'px', 'py'])
+        sample['clicks'] = pd.read_csv(samplefolder + '/mouse_clicks.txt', names=['timestamp', 'px', 'py', 'button'])
+        sample['scrolls'] = pd.read_csv(samplefolder + '/mouse_scrolls.txt', names=['timestamp', 'px', 'py','dx', 'dy'])
+        sample['keys'] = pd.read_csv(samplefolder + '/keys_pressed.txt', names=['timestamp', 'key'])
+        sample['screenshots'] = gscreenschots_df(samplefolder)
+        data[samplefolder.split('/')[-1]] = sample
+    return data
