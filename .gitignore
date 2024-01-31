@@ -1,8 +1,11 @@
 __pycache__/monitorlib.cpython-310.pyc
 data/
+wandb/
 installation-usage.txt
 monitor_test.ipynb
 output.png
 __temp__.mp4
 misc.ipynb
 01_vae_training.ipynb
+best_vae.pt
+visual_validation.jpg
