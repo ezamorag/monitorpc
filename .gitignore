@@ -4,6 +4,8 @@ wandb/
 corpus/
 past_versions/
 automat/
+runs/
+tools/
 __*
 *.csv
 *.pt
