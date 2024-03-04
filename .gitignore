@@ -7,10 +7,10 @@ automat/
 runs/
 tools/
 __*
+misc.ipynb
 *.csv
 *.pt
 *.jpg
 *.png
 *.mp4
 installation-usage.txt
-misc.ipynb
