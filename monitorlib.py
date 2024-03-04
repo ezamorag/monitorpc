@@ -37,23 +37,6 @@ class Monitorpc:
         self.base_folder = 'data/'
         self.sample_folder = self.create_incremented_folder(self.base_folder) + '/'     
         
-    # Monitoring (No used)
-    def start_wvideo(self):
-        height, width, layers = self.capture_screen().shape
-        video = cv2.VideoWriter(self.sample_folder + 'screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
-        print("Monitoring is working ...")
-        self.running = True
-        self.start_time = time.perf_counter()
-        with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
-            keyboard.Listener(on_press=self.on_press) as listener_keyboard:
-            while self.running:
-                video.write(self.capture_screen())
-                time.sleep(1.0/self.fps)
-        cv2.destroyAllWindows()
-        video.release()
-        self.savevents()
-        print("Monitoring was ended ...")
-
     # Monitoring
     def start(self):
         print("Waiting for activation with ESC key ...")
@@ -123,6 +106,23 @@ class Monitorpc:
         new_folder_path = os.path.join(path, new_folder_name)
         os.makedirs(new_folder_path)
         return new_folder_path
+    
+    # Monitoring (No used)
+    def start_wvideo(self):
+        height, width, layers = self.capture_screen().shape
+        video = cv2.VideoWriter(self.sample_folder + 'screencast.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 1/0.0525, (width, height))
+        print("Monitoring is working ...")
+        self.running = True
+        self.start_time = time.perf_counter()
+        with mouse.Listener(on_move=self.on_move, on_click=self.on_click, on_scroll=self.on_scroll) as listener_mouse, \
+            keyboard.Listener(on_press=self.on_press) as listener_keyboard:
+            while self.running:
+                video.write(self.capture_screen())
+                time.sleep(1.0/self.fps)
+        cv2.destroyAllWindows()
+        video.release()
+        self.savevents()
+        print("Monitoring was ended ...")
 
 
 ### To load PC data 
