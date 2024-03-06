@@ -23,6 +23,7 @@ import keyboard as kb
 #  2) Problema de nivel 2: Grabar los screenshots, asumiendo que grabo todo 
 #       1) en iamgenes con sicronia es infeiciente en memoria 29gb en 1hora, 
 #       2) en video 1.9gb en 1hora, pero pierdo sincronia, a menos que estampe el tiempo en el frame -> ESTAMPAR tiempos en el frame invisiblemente?
+#Invisible watermark ponlo en tus notas del pc cloner https://pypi.org/project/invisible-watermark/
 
 #filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".jpg" Hace muy lenta los FPS para el screensaving
 
